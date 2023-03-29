@@ -1,24 +1,8 @@
 import fastify from 'fastify'
-import { createConnection } from 'typeorm'
-import { Book } from './entities/books'
+import { bookRoutes } from "./routes/books";
 
 const server = fastify({logger: true})
-server.register(require("./routs/books"))
-
-
-createConnection({ 
-  type: "mongodb",
-  host: "localhost",
-  port: 27017,
-  database: "Books",
-  // username: "root",
-  // password: "password",
-  logging: true,
-  synchronize: true,
-  entities: [Book]
-});
-
-
+server.register(bookRoutes)
 
 server.listen({ port: 8080 }, (err, address) => {
   if (err) {
