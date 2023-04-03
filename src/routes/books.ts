@@ -1,5 +1,4 @@
-import { Book } from '../entities/books'
-const { getBooks, postBook } = require('../controllers/books')
+import { BooksController } from "../controllers/books";
 
 //Options for get all books
 const getBooksOpts = {
@@ -17,10 +16,14 @@ const getBooksOpts = {
             author: {type: "string"},
           }
         }
+      },
+      404: {
+        type: "object",
+        properties: { error: { type: "string"} }
       }
     }
   },
-  handler: getBooks
+  handler: BooksController.getBooks
 }
 
 const postBookOpts = {
@@ -45,19 +48,22 @@ const postBookOpts = {
           year: {type: "string"},
           author: {type: "string"},
           }
-        }
+        },
+      404: {
+        properties: { error: { type: "string"} }
       }
-    },
-    handler: postBook
+    }
+  },
+  handler: BooksController.addBook
   }
 
-function bookRoutes (fastify, options, done) {
+async function bookRoutes (fastify: any, options: any, done: any) {
 
   fastify.get('/', getBooksOpts);
-  
+
   fastify.post('/', postBookOpts);
 
-  done()
+  done();
 }
 
-module.exports = bookRoutes
+export { bookRoutes };
